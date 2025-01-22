@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Chart from './Chart';
 
 const ChartForm = () => {
   const [username, setUsername] = useState('');
@@ -77,17 +78,10 @@ const ChartForm = () => {
       <div className="mt-4">
         <h2 className="text-2xl font-bold">Heart Rate</h2>
         <ul className="mt-2">
-          {heartRate && heartRate.length > 0 ? (
-            heartRate.map((entry, index) => (
-              <div key={index} className="flex gap-2">
-                <p className="text-lg">
-                  {new Date(entry.timestamp).toLocaleString()}
-                </p>
-                <p className="text-lg">{entry.heartRate}</p>
-              </div>
-            ))
+          {heartRate.length > 0 ? (
+            <Chart heartRate={heartRate} />
           ) : (
-            <p>No data available</p>
+            <p>No heart rate data available</p>
           )}
         </ul>
       </div>
