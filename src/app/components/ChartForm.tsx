@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chart from './Chart';
 
 const ChartForm = () => {
@@ -9,6 +9,7 @@ const ChartForm = () => {
     { timestamp: number; heartRate: number }[]
   >([]);
   const [error, setError] = useState<string | null>(null);
+  const [isFetching, setIsFetching] = useState(false);
 
   const signInUser = async (username: string) => {
     try {
@@ -40,11 +41,20 @@ const ChartForm = () => {
         throw new Error('Failed to fetch heart rate');
       }
       const data = await res.json();
-      console.log(data.measurements);
-      setHeartRate(data.measurements);
+      const newMeasurements = data.measurements.map(
+        (entry: { timestamp: number; heartRate: number }) => ({
+          timestamp: entry.timestamp,
+          heartRate: entry.heartRate,
+        }),
+      );
+
+      // keep the last 20 data points
+      setHeartRate((prev) => {
+        const updatedData = [...prev, ...newMeasurements];
+        return updatedData.slice(-20);
+      });
     } catch (err) {
       console.error(err);
-      setError('Failed to fetch heart rate. Please try again.');
     }
   };
 
@@ -53,37 +63,41 @@ const ChartForm = () => {
     setError(null);
     const signedIn = await signInUser(username);
     if (signedIn) {
-      fetchHeartRate(username);
+      setHeartRate([]);
+      setIsFetching(true);
     }
   };
 
+  useEffect(() => {
+    if (!isFetching) return;
+
+    const interval = setInterval(() => {
+      fetchHeartRate(username);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isFetching, username]);
+
   return (
-    <div className="mt-10">
+    <div className="mt-8">
       <form className="flex max-w-40 gap-1" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Enter your name"
-          className="p-2 border border-gray-300 rounded"
+          className="p-2 border border-gray-300 rounded text-black"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <button
           type="submit"
-          className="bg-black text-white px-4 py-2 rounded ml-2 "
+          className="bg-[#2dd4bf] text-[#111827] px-4 py-2 rounded ml-2 "
         >
           Submit
         </button>
       </form>
       {error && <p className="text-red-500 mt-2">{error}</p>}
-      <div className="mt-4">
-        <h2 className="text-2xl font-bold">Heart Rate</h2>
-        <ul className="mt-2">
-          {heartRate.length > 0 ? (
-            <Chart heartRate={heartRate} />
-          ) : (
-            <p>No heart rate data available</p>
-          )}
-        </ul>
+      <div className="mt-6">
+        {heartRate.length > 0 && <Chart heartRate={heartRate} />}
       </div>
     </div>
   );

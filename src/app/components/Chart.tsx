@@ -26,21 +26,60 @@ const Chart = ({
   heartRate: { timestamp: number; heartRate: number }[];
 }) => {
   const data = {
-    labels: heartRate.map((data) =>
-      new Date(data.timestamp).toLocaleTimeString(),
+    labels: heartRate.map(
+      (data) => new Date(data.timestamp).toLocaleTimeString(),
+      { hour: '2-digit', minute: '2-digit', second: '2-digit' },
     ),
     datasets: [
       {
         label: 'Heart Rate',
         data: heartRate.map((data) => data.heartRate),
-        fill: false,
+        fill: 'origin',
+        backgroundColor: 'rgba(75, 192, 192, 0.831)',
         borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1,
+        tension: 0.3,
+        pointBackgroundColor: 'rgb(75, 192, 192)',
+        pointBorderColor: '#fff',
+        pointRadius: 3,
       },
     ],
   };
 
-  return <Line data={data} />;
+  const options = {
+    responsive: true,
+    maintainAspectRatio: true,
+    aspectRatio: 1,
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Time',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Heart Rate (BPM)',
+        },
+        suggestedMin: 50,
+        suggestedMax: 120,
+      },
+    },
+    animation: {
+      duration: 500,
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
+
+  return (
+    <div className="w-[420px] h-[420px]">
+      <Line data={data} options={options} height={30} width={30} />
+    </div>
+  );
 };
 
 export default Chart;
