@@ -3,8 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import Chart from './Chart';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 const ChartForm = () => {
   const [username, setUsername] = useState('');
   const [heartRate, setHeartRate] = useState<
@@ -15,7 +13,7 @@ const ChartForm = () => {
 
   const signInUser = async (username: string) => {
     try {
-      const res = await fetch(`${API_URL}/signin`, {
+      const res = await fetch(`api/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
