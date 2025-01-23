@@ -8,8 +8,7 @@ export default function Home() {
           Heart Rate
         </h1>
         <p className="text-lg md:text-xl leading-relaxed mb-6">
-          Welcome to a space that allows you to watch real-time heart rate data,
-          and stay on top of your health with ease and style.
+          Welcome to a space that allows you to watch real-time heart rate data.
         </p>
       </header>
       <div className="bg-black bg-opacity-70 px-6 py-1 rounded-lg shadow-lg">

@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import Chart from './Chart';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const ChartForm = () => {
   const [username, setUsername] = useState('');
   const [heartRate, setHeartRate] = useState<
@@ -13,16 +15,13 @@ const ChartForm = () => {
 
   const signInUser = async (username: string) => {
     try {
-      const res = await fetch(
-        'https://nowatch-fullstack-test-assignment.vercel.app/api/signin',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ username }),
+      const res = await fetch(`${API_URL}/signin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify({ username }),
+      });
       if (!res.ok) {
         throw new Error('Failed to sign in');
       }

@@ -1,4 +1,8 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Overview
+
+This web application allows users to monitor real-time heart rate data. Users can input their name and get heart rate data that are visualized in a line chart.
+
+![Screenshot](/public/heart-rate.png)
 
 ## Getting Started
 

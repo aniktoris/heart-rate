@@ -4,8 +4,9 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const username = searchParams.get('username');
+    const apiUrl = process.env.EXTERNAL_API_URL;
     const res = await fetch(
-      `https://nowatch-fullstack-test-assignment.vercel.app/api/measurements?username=${username}`,
+      `${apiUrl}/measurements?username=${username}`,
     );
     if (!res.ok) {
       console.error('API response error:', res.status, res.statusText);

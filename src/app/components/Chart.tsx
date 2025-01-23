@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
   PointElement,
+  Filler,
 } from 'chart.js';
 
 ChartJS.register(
@@ -18,6 +19,7 @@ ChartJS.register(
   Tooltip,
   Legend,
   PointElement,
+  Filler,
 );
 
 const Chart = ({
@@ -35,7 +37,7 @@ const Chart = ({
         label: 'Heart Rate',
         data: heartRate.map((data) => data.heartRate),
         fill: 'origin',
-        backgroundColor: 'rgba(75, 192, 192, 0.831)',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.3,
         pointBackgroundColor: 'rgb(75, 192, 192)',
